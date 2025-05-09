@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="case">
+    <h2>Case {{ session.current_case + 1 }} of {{ NUM_CASES_PER_PARTICIPANT }}</h2>
+
+    <div class="alert alert-info">
+        You have an endowment of €{{ TOTAL_BONUS_PER_CASE }} for this case. Your bonus will depend on your decisions and confidence.
+    </div>
+
+    <div class="case-text">
+        {{ text }}
+    </div>
+
+    <form id="decision-form" action="{{ url_for('submit_initial_decision') }}" method="post">
+        <p><strong>Please choose how you would like to proceed in this case:</strong></p>
+        <div class="btn-container">
+            <button type="button" id="btn-pursue" class="btn btn-primary" data-value="pursue">Pursue</button>
+            <button type="button" id="btn-drop" class="btn btn-danger" data-value="drop">Drop</button>
+            <input type="hidden" id="decision" name="decision" value="">
+        </div>
+
+        <h3>How confident are you in your decision?</h3>
+        <div class="slider-container">
+            <input type="range" class="form-range" min="0" max="100" value="50" id="confidence" name="confidence" step="10" disabled>
+            <span class="confidence-value">50%</span>
+        </div>
+        <div class="btn-container">
+            <button type="submit" id="next-btn" class="btn btn-success" disabled>Next</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const btnPursue = document.getElementById('btn-pursue');
+    const btnDrop = document.getElementById('btn-drop');
+    const decisionInput = document.getElementById('decision');
+    const slider = document.getElementById('confidence');
+    const value = document.querySelector('.confidence-value');
+    const nextBtn = document.getElementById('next-btn');
+    let decisionMade = false;
+    let sliderMoved = false;
+
+    function updateNextBtn() {
+        nextBtn.disabled = !(decisionMade && sliderMoved);
+    }
+
+    btnPursue.addEventListener('click', function() {
+        decisionInput.value = 'pursue';
+        btnPursue.classList.add('btn-primary');
+        btnPursue.classList.remove('btn-outline-primary');
+        btnDrop.classList.add('btn-outline-danger');
+        btnDrop.classList.remove('btn-danger');
+        decisionMade = true;
+        slider.disabled = false;
+        updateNextBtn();
+    });
+    btnDrop.addEventListener('click', function() {
+        decisionInput.value = 'drop';
+        btnDrop.classList.add('btn-danger');
+        btnDrop.classList.remove('btn-outline-danger');
+        btnPursue.classList.add('btn-outline-primary');
+        btnPursue.classList.remove('btn-primary');
+        decisionMade = true;
+        slider.disabled = false;
+        updateNextBtn();
+    });
+    slider.addEventListener('input', function() {
+        value.textContent = this.value + '%';
+        sliderMoved = true;
+        updateNextBtn();
+    });
+    // Prevent form submission if not ready
+    document.getElementById('decision-form').addEventListener('submit', function(e) {
+        if (!decisionMade || !sliderMoved) {
+            e.preventDefault();
+        }
+    });
+</script>
+{% endblock %} 

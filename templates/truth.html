@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="truth">
+    <h2>Fact-Check Result</h2>
+    
+    <div class="alert alert-info">
+        The correct action was: <strong>{{ correct_action|title }}</strong>
+    </div>
+
+    <div class="btn-container">
+        <a href="{{ next_url }}" class="btn btn-primary">Next</a>
+    </div>
+</div>
+{% endblock %} 

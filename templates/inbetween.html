@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center">
+    <h2 class="mb-4">Next Case</h2>
+    <p class="lead">You will now get a second case. Your endowment from the first case will be revealed at the end. Please click the next button for further instructions.</p>
+    <div class="btn-container">
+        <a href="{{ url_for('inbetween_next') }}" class="btn btn-primary btn-lg">Next</a>
+    </div>
+</div>
+{% endblock %}

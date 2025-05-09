@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="completion text-center">
+    <h1 class="mb-4">Thank You for Participating!</h1>
+    
+    <div class="alert alert-success">
+        <h2>Your Total Bonus: €{{ "%.2f"|format(total_bonus) }}</h2>
+        <p>This will be added to your €5 base payment.</p>
+    </div>
+
+    <div class="mt-4">
+        <h3>Experiment Summary</h3>
+        <p>You completed {{ NUM_CASES_PER_PARTICIPANT }} cases and made decisions about business scenarios with AI advice.</p>
+        <p>Your responses have been recorded and will be used for research purposes.</p>
+    </div>
+
+    <div class="mt-4">
+        <p>You may now close this window.</p>
+    </div>
+</div>
+{% endblock %} 

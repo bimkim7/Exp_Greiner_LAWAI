@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="mb-4">Welcome to the Decision Making Experiment</h1>
+    <p class="lead">Thank you for participating in this study. You will earn €5 for showing up, plus up to €{{ NUM_CASES_PER_PARTICIPANT * TOTAL_BONUS_PER_CASE }} in bonus payments based on your performance.</p>
+    <div class="btn-container">
+        <a href="{{ url_for('instructions') }}" class="btn btn-primary btn-lg">Start Experiment</a>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="opponent">
+    <h2>Gerichtsverfahren</h2>
+    <div class="mb-3">
+        In weiterer Folge kommt es schlussendlich zu einem Gerichtsverfahren. Es besteht in erster Instanz keine Anwaltspflicht.
+    </div>
+    <div class="alert alert-info">{{ variant_text }}</div>
+    <div class="mb-3">
+        <strong>You have stated before:</strong> <span class="text-primary">{{ session['responses'][-1]['initial_decision']|capitalize }}</span>
+    </div>
+    <div class="mb-3">
+        <strong class="question-label">Do you stay with your previous decision?</strong>
+        <div class="btn-container">
+            <button type="button" id="btn-stay-yes" class="btn btn-success" data-value="yes">Yes</button>
+            <button type="button" id="btn-stay-no" class="btn btn-outline-danger" data-value="no">No</button>
+            <input type="hidden" id="stay_with_decision" name="stay_with_decision" value="">
+        </div>
+    </div>
+    <form id="opponent-form" action="{{ url_for('trust_decision') }}" method="post">
+        <h3 class="question-label">Wie sicher sind Sie sich in Ihrer Entscheidung?</h3>
+        <div class="slider-container">
+            <input type="range" class="form-range" min="0" max="100" value="50" id="confidence" name="confidence" step="10">
+            <span class="confidence-value">50%</span>
+        </div>
+
+        <h2 class="mt-4 question-label">Fact check option</h2>
+        <div class="mb-2 question-label">You now have the option to get a fact check of the AI advice you were given.</div>
+        <div class="mb-3">
+            <div class="question-label"><strong>Your previous AI advice</strong></div>
+            <div class="case-text">{{ ai_advice }}</div>
+        </div>
+
+        <h3 class="question-label">Wie beurteilen Sie den erhaltenen AI-Rat?</h3>
+        <div class="btn-container">
+            <button type="button" id="btn-correct" class="btn btn-success" data-value="advice correct">Advice was correct</button>
+            <button type="button" id="btn-wrong" class="btn btn-danger" data-value="advice wrong">Advice was wrong</button>
+            <input type="hidden" id="trust_choice" name="trust_choice" value="">
+        </div>
+
+        <div id="factcheck-section" style="display:none; margin-top:2em;">
+            <div class="mb-2">
+                Möchten Sie einen Fact-Check durchführen? (Dies kostet 50% Ihres Endowments. Wenn Sie keinen Fact-Check durchführen, wird Ihre Auszahlung auf Basis Ihrer bisherigen Antwort berechnet.)
+            </div>
+            <div class="btn-container">
+                <button type="button" id="btn-fact-yes" class="btn btn-danger" data-value="yes">Ja, Fact-Check</button>
+                <button type="button" id="btn-fact-no" class="btn btn-primary" data-value="no">Nein, ohne Fact-Check fortfahren</button>
+                <input type="hidden" id="fact_check" name="fact_check" value="">
+            </div>
+        </div>
+        <div class="btn-container" id="next-section" style="display:none; margin-top:2em;">
+            <button type="submit" id="next-btn" class="btn btn-success" disabled>Next</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const slider = document.getElementById('confidence');
+    const value = document.querySelector('.confidence-value');
+    slider.addEventListener('input', function() {
+        value.textContent = this.value + '%';
+    });
+
+    const btnStayYes = document.getElementById('btn-stay-yes');
+    const btnStayNo = document.getElementById('btn-stay-no');
+    const stayWithDecision = document.getElementById('stay_with_decision');
+    let stayChosen = false;
+    btnStayYes.addEventListener('click', function() {
+        stayWithDecision.value = 'yes';
+        btnStayYes.classList.add('btn-success');
+        btnStayYes.classList.remove('btn-outline-success');
+        btnStayNo.classList.add('btn-outline-danger');
+        btnStayNo.classList.remove('btn-danger');
+        stayChosen = true;
+    });
+    btnStayNo.addEventListener('click', function() {
+        stayWithDecision.value = 'no';
+        btnStayNo.classList.add('btn-danger');
+        btnStayNo.classList.remove('btn-outline-danger');
+        btnStayYes.classList.add('btn-outline-success');
+        btnStayYes.classList.remove('btn-success');
+        stayChosen = true;
+    });
+
+    const btnCorrect = document.getElementById('btn-correct');
+    const btnWrong = document.getElementById('btn-wrong');
+    const trustChoice = document.getElementById('trust_choice');
+    const factcheckSection = document.getElementById('factcheck-section');
+    const btnFactYes = document.getElementById('btn-fact-yes');
+    const btnFactNo = document.getElementById('btn-fact-no');
+    const factCheckInput = document.getElementById('fact_check');
+    const nextSection = document.getElementById('next-section');
+    const nextBtn = document.getElementById('next-btn');
+
+    let factCheckChosen = false;
+    let aiJudged = false;
+
+    btnCorrect.addEventListener('click', function() {
+        trustChoice.value = 'advice correct';
+        btnCorrect.classList.add('btn-success');
+        btnCorrect.classList.remove('btn-outline-success');
+        btnWrong.classList.add('btn-outline-danger');
+        btnWrong.classList.remove('btn-danger');
+        factcheckSection.style.display = 'block';
+        aiJudged = true;
+    });
+    btnWrong.addEventListener('click', function() {
+        trustChoice.value = 'advice wrong';
+        btnWrong.classList.add('btn-danger');
+        btnWrong.classList.remove('btn-outline-danger');
+        btnCorrect.classList.add('btn-outline-success');
+        btnCorrect.classList.remove('btn-success');
+        factcheckSection.style.display = 'block';
+        aiJudged = true;
+    });
+
+    btnFactYes.addEventListener('click', function() {
+        factCheckInput.value = 'yes';
+        btnFactYes.classList.add('btn-danger');
+        btnFactYes.classList.remove('btn-outline-danger');
+        btnFactNo.classList.add('btn-outline-primary');
+        btnFactNo.classList.remove('btn-primary');
+        nextSection.style.display = 'block';
+        nextBtn.disabled = false;
+        factCheckChosen = true;
+    });
+    btnFactNo.addEventListener('click', function() {
+        factCheckInput.value = 'no';
+        btnFactNo.classList.add('btn-primary');
+        btnFactNo.classList.remove('btn-outline-primary');
+        btnFactYes.classList.add('btn-outline-danger');
+        btnFactYes.classList.remove('btn-danger');
+        nextSection.style.display = 'block';
+        nextBtn.disabled = false;
+        factCheckChosen = true;
+    });
+
+    // Prevent form submission if not all required steps are done
+    document.getElementById('opponent-form').addEventListener('submit', function(e) {
+        if (!stayWithDecision.value || !trustChoice.value || !factCheckInput.value) {
+            e.preventDefault();
+        }
+    });
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+.question-label {
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+</style>
+{% endblock %} 

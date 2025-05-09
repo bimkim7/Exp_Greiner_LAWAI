@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="instructions">
+    <h1 class="mb-4">Instructions</h1>
+    
+    <h2>Overview</h2>
+    <p>In this experiment, you will make decisions about business scenarios. For each case:</p>
+    <ul>
+        <li>You'll make an initial decision and report your confidence</li>
+        <li>You'll receive AI advice</li>
+        <li>You can revise your decision and confidence</li>
+        <li>You can choose to trust the advice or fact-check it</li>
+    </ul>
+
+    <h2>Payment Structure</h2>
+    <ul>
+        <li>Base payment: €5 for participation</li>
+        <li>Bonus: Up to €{{ TOTAL_BONUS_PER_CASE }} per case ({{ NUM_CASES_PER_PARTICIPANT }} cases total)</li>
+        <li>Fact-checking costs: {{ FACT_CHECK_COST_RATE * 100 }}% of your current bonus for that case</li>
+    </ul>
+
+    <h2>Scoring</h2>
+    <p>Your bonus is calculated using a Quadratic Scoring Rule based on your confidence and whether your decision was correct. The more accurate your confidence assessment, the higher your bonus.</p>
+
+    <div class="btn-container">
+        <a href="{{ url_for('show_case') }}" class="btn btn-primary btn-lg">Begin First Case</a>
+    </div>
+</div>
+{% endblock %} 
