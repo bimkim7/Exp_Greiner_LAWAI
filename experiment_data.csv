@@ -1,0 +1,15 @@
+timestamp,participant_id,step,case_id,stakes,initial_decision,initial_confidence,revised_decision,revised_confidence,attention_check,opponent_confidence,stay_with_decision,trust_choice,fact_check,fact_check_cost,is_correct,case_reward,case_bonus,age,gender,study_level,study_other,task_expertise_0,task_expertise_1,task_expertise_2,task_expertise_3,ptt_0,ptt_1,ptt_2,ptt_3,ptt_4,ptt_5,atai_0,atai_1,atai_2,atai_3,atai_4,total_bonus
+2025-05-12T10:12:20.157122,7370,initial_decision,3,high,drop,0.7,,,,,,,,,,,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:12:23.926896,7370,revised_decision,3,high,drop,0.7,drop,0.2,no,,,,,,,,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:12:32.131650,7370,trust_decision,3,high,drop,0.7,drop,0.2,no,0.8,,advice wrong,no,,False,9.6,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:12:35.670420,7370,initial_decision,1,high,drop,0.2,,,,,,,,,,,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:12:43.642074,7370,revised_decision,1,high,drop,0.2,drop,0.6,no,,,,,,,,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:12:50.177966,7370,trust_decision,1,high,drop,0.2,drop,0.6,no,0.8,,advice wrong,no,,False,6.4,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:13:12.806684,7370,questionnaire,1,high,drop,0.2,drop,0.6,no,0.8,,advice wrong,no,,False,,10.0,43,female,Master (Business Law),,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,16.0
+2025-05-12T10:18:44.297157,7370,initial_decision,3,high,drop,0.2,,,,,,,,,,,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:18:47.529421,7370,revised_decision,3,high,drop,0.2,drop,0.3,no,,,,,,,,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:18:53.422074,7370,trust_decision,3,high,drop,0.2,drop,0.3,no,0.3,,advice wrong,no,,False,9.1,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:18:56.571421,7370,initial_decision,2,high,drop,0.3,,,,,,,,,,,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:19:04.412381,7370,revised_decision,2,high,drop,0.3,pursue,0.3,no,,,,,,,,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:19:11.249270,7370,trust_decision,2,high,drop,0.3,pursue,0.3,no,0.3,,advice wrong,no,,False,9.1,10.0,,,,,,,,,,,,,,,,,,,,
+2025-05-12T10:19:37.416772,7370,questionnaire,2,high,drop,0.3,pursue,0.3,no,0.3,,advice wrong,no,,False,,10.0,32,other,Bachelor (Business Law),,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,18.2
